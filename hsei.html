@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação IEAF - Distribuição de Pesos (Formulário Completo)</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #e8f5e9;
+            --secondary: #f4f7f6;
+            --text: #1e2e1e;
+            --accent: #0d47a1;
+            --warning: #b71c1c;
+            --border: #c8e6c9;
+            --gray-light: #f5f5f5;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .container {
+            background: white;
+            padding: 40px 45px;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(46,125,50,0.08);
+            width: 100%;
+            max-width: 1200px;
+        }
+        /* Cabeçalho de validação */
+        .validation-header {
+            background: linear-gradient(145deg, #f1f8e9, #e8f5e9);
+            padding: 35px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            border-left: 8px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .validation-header h1 {
+            color: #1b4d1b;
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .validation-header p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        .highlight {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 16px;
+            font-weight: 500;
+            border: 1px solid #a5d6a5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            margin-top: 20px;
+        }
+        h2 {
+            color: #1e4a1e;
+            font-size: 1.8rem;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #2e5e2e;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 6px solid #81c784;
+        }
+        /* Cards de questões */
+        .question-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 6px 14px rgba(46,125,50,0.06);
+            transition: all 0.2s;
+        }
+        .question-card:hover {
+            border-color: #81c784;
+            box-shadow: 0 10px 20px rgba(46,125,50,0.1);
+        }
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #0a2f0a;
+            line-height: 1.5;
+        }
+        .question-image {
+            margin: 20px 0;
+            text-align: center;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 16px;
+            font-style: italic;
+            color: #4a6a4a;
+            border: 1px dashed #a5d6a5;
+        }
+        /* Alternativas */
+        .alternative {
+            background: var(--gray-light);
+            padding: 20px 25px;
+            margin-bottom: 16px;
+            border-radius: 20px;
+            border-left: 6px solid #bdbdbd;
+            transition: 0.2s;
+        }
+        .alternative:hover {
+            background: #f1f8e9;
+            border-left-color: #66bb6a;
+        }
+        .alternative-label {
+            font-weight: 700;
+            color: #1e3a1e;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        .peso-control {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .peso-control label {
+            font-weight: 600;
+            color: #2e3b2e;
+            min-width: 80px;
+        }
+        input[type=number] {
+            padding: 12px 16px;
+            border: 2px solid #c8e6c9;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            width: 100px;
+            font-weight: 600;
+            color: #1b4d1b;
+            background: white;
+            transition: 0.2s;
+            text-align: center;
+        }
+        input[type=number]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(46,125,50,0.15);
+        }
+        .soma-indicator {
+            display: inline-block;
+            margin-left: 20px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 30px;
+            background: white;
+            border: 1px solid #c8e6c9;
+        }
+        .soma-valida {
+            color: #2e7d32;
+        }
+        .soma-invalida {
+            color: #b71c1c;
+            background: #ffebee;
+            border-color: #ef9a9a;
+        }
+        /* Seção identificação */
+        .identificacao-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: #fafdfa;
+            padding: 35px;
+            border-radius: 28px;
+            margin-bottom: 30px;
+            border: 1px solid #c8e6c9;
+        }
+        .campo-id {
+            margin-bottom: 25px;
+        }
+        .campo-id label {
+            display: block;
+            font-weight: 700;
+            color: #1e4a1e;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        select, .radio-group {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #c8e6c9;
+            border-radius: 18px;
+            font-size: 1rem;
+            background: white;
+        }
+        .radio-group {
+            padding: 14px;
+        }
+        .radio-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: normal;
+            color: var(--text);
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        .buttons {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 2px dashed #c8e6c9;
+        }
+        button {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.2s;
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 14px rgba(46,125,50,0.25);
+        }
+        button:hover {
+            background: #1e5a1e;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(46,125,50,0.35);
+        }
+        .btn-reset {
+            background: #757575;
+            box-shadow: none;
+        }
+        .btn-reset:hover {
+            background: #5a5a5a;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #4a6a4a;
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 25px;
+        }
+        .intro-text {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #a5d6a5;
+        }
+        .example-box {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border-left: 4px solid #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABEÇALHO DE VALIDAÇÃO COMPLETO -->
+        <div class="validation-header">
+            <h1>🌱 Escala de Inteligência Emocional da Agricultura Familiar (IEAF)</h1>
+            <p style="font-size:1.3rem; font-weight:600;">Convite à Validação por Especialistas</p>
+            
+            <div class="intro-text">
+                <p>Prezado(a) Especialista,</p>
+                <p>Você está sendo convidado(a) a colaborar com a etapa de validação de um instrumento de pesquisa inédito, desenvolvido no âmbito de minha tese de Doutorado. O objetivo deste estudo é analisar a influência da Inteligência Emocional (IE) na tomada de decisão sustentável no contexto da agricultura familiar.</p>
+                <p>Este instrumento é uma adaptação da Consumer Emotional Intelligence Scale (CEIS), desenvolvida originalmente por Kidwell, Hardesty e Childers (2008). A escala fundamenta-se no modelo de habilidades de Mayer e Salovey (1997), aqui adaptado para a realidade do agricultor.</p>
+            </div>
+            
+            <h3 style="margin-top: 25px;">📋 Instruções para atribuição de pesos</h3>
+            <p>Para cada cenário apresentado, solicitamos que você distribua o valor total de <strong>1,0 ponto</strong> entre as três alternativas de resposta.</p>
+            <p>Sua contribuição servirá para estabelecer o consenso de especialistas. Solicitamos que, para cada cenário apresentado, você atribua uma nota de 0 a 1 para CADA UMA das três alternativas de resposta. Quanto mais inteligente e funcional for a atitude descrita, maior deve ser a fração do ponto recebida.</p>
+            
+            <div class="highlight">
+                <p><strong>✅ Cálculo para cada questão:</strong> A soma das pontuações das três alternativas (A + B + C) deve ser <strong>1,0</strong>.</p>
+                
+                <div class="example-box">
+                    <p><strong>Exemplo de preenchimento:</strong></p>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li>• Alternativa A = Atitude pouco eficaz = <strong>0,1</strong></li>
+                        <li>• Alternativa B = Atitude mediana = <strong>0,2</strong></li>
+                        <li>• Alternativa C = Atitude altamente eficaz = <strong>0,7</strong></li>
+                        <li>• <strong>Total = 1,0</strong></li>
+                    </ul>
+                </div>
+                
+                <p><strong>Ponto importante:</strong> Se você considerar que duas respostas são igualmente eficazes e uma é totalmente ineficaz, poderá pontuar, como 0,5 / 0,5 / 0,0. O importante é que a distribuição reflita sua análise técnica sobre a qualidade da decisão emocional.</p>
+                <p>As médias das distribuições feitas por este corpo de especialistas constituirão o peso oficial de cada resposta no questionário final.</p>
+                <p><strong>Garantimos o sigilo absoluto</strong> de seus dados e o uso estritamente acadêmico das informações.</p>
+                <p style="margin-top: 15px; font-style: italic;">Desde já, agradeço imensamente pela sua expertise e tempo dedicados a este estudo.</p>
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO PRINCIPAL -->
+        <form id="validadorIEAF">
+            <!-- ========== SEÇÃO 1: IDENTIFICAÇÃO ========== -->
+            <h2>📌 Seção 1: Identificação e Área de Domínio</h2>
+            <div class="identificacao-grid">
+                <div>
+                    <div class="campo-id">
+                        <label>1. Principal área de atuação:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="area_atuacao" value="Psicologia" required> Comportamento Humano e Psicologia</label>
+                            <label><input type="radio" name="area_atuacao" value="Economia"> Ciências Econômicas (Economia)</label>
+                            <label><input type="radio" name="area_atuacao" value="Administracao"> Administração</label>
+                            <label><input type="radio" name="area_atuacao" value="Ambientais"> Ciências Ambientais (com foco em Meio Ambiente)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="campo-id">
+                        <label>2. Qual sua titulação acadêmica máxima?</label>
+                        <select name="titulacao" required>
+                            <option value="">Selecione</option>
+                            <option value="Graduacao">Graduação</option>
+                            <option value="Especializacao">Especialização / MBA</option>
+                            <option value="Mestrado">Mestrado</option>
+                            <option value="Doutorado">Doutorado</option>
+                            <option value="PosDoutorado">Pós-Doutorado</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="campo-id">
+                        <label>3. Há quanto tempo você atua profissionalmente na área selecionada?</label>
+                        <select name="tempo_atuacao" required>
+                            <option value="">Selecione</option>
+                            <option value="Menos5">Menos de 5 anos</option>
+                            <option value="5a10">5 a 10 anos</option>
+                            <option value="11a20">11 a 20 anos</option>
+                            <option value="Mais20">Mais de 20 anos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="campo-id">
+                        <label>4. Em qual setor se concentra a maior parte da sua trajetória profissional?</label>
+                        <select name="setor" required>
+                            <option value="">Selecione</option>
+                            <option value="Academico">Acadêmico (Docência e Pesquisa)</option>
+                            <option value="Privado">Setor Privado (Empresas/Consultoria)</option>
+                            <option value="Publico">Setor Público / Governamental</option>
+                            <option value="Terceiro">Terceiro Setor (ONGs e Institutos)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FUNÇÃO DE VALIDAÇÃO DE SOMA -->
+            <script>
+                function validarSoma(questaoId) {
+                    let a = parseFloat(document.getElementById(questaoId + 'A')?.value.replace(',', '.')) || 0;
+                    let b = parseFloat(document.getElementById(questaoId + 'B')?.value.replace(',', '.')) || 0;
+                    let c = parseFloat(document.getElementById(questaoId + 'C')?.value.replace(',', '.')) || 0;
+                    let soma = a + b + c;
+                    let indicador = document.getElementById('soma_' + questaoId);
+                    
+                    if (indicador) {
+                        let diff = Math.abs(soma - 1.0);
+                        if (diff < 0.001) {
+                            indicador.innerHTML = '✅ Soma = 1,0';
+                            indicador.className = 'soma-indicator soma-valida';
+                        } else {
+                            indicador.innerHTML = '❌ Soma = ' + soma.toFixed(2) + ' (deve ser 1,0)';
+                            indicador.className = 'soma-indicator soma-invalida';
+                        }
+                    }
+                }
+
+                function validarTodasSomas() {
+                    // Percepção (P1-P4)
+                    for (let i = 1; i <= 4; i++) validarSoma('p' + i);
+                    
+                    // Facilitação (F1-F4)
+                    for (let i = 1; i <= 4; i++) validarSoma('f' + i);
+                    
+                    // Compreensão (C1-C5)
+                    for (let i = 1; i <= 5; i++) validarSoma('c' + i);
+                    
+                    // Gestão (G1-G5)
+                    for (let i = 1; i <= 5; i++) validarSoma('g' + i);
+                }
+            </script>
+
+            <!-- ========== DIMENSÃO: PERCEPÇÃO ========== -->
+            <h2>🧠 DIMENSÃO - PERCEPÇÃO</h2>
+
+            <!-- Questão P1 -->
+            <div class="question-card">
+    <span class="question-number">Questão P1</span>
+    <div class="question-text">Você está visitando a propriedade de um antigo cooperado da região. Ele sempre focou na máxima extração imediata do solo, ignorando a necessidade de descanso da terra ou manejo sustentável. Ao caminhar pela propriedade, você se depara com a cena abaixo:</div>
+    
+      <div class="question-image">
+        <img src="untitled.PNG" alt="Imagem de exaustão do solo - Embrapa 2020" style="max-width:100%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin-top:10px; font-size:0.9rem; color:#666;">Fonte: Embrapa (2020) - Exaustão do solo</p>
+    </div>
+   
+                <div class="question-text">Ao olhar para essa imagem e considerar o contexto da nossa região, o que você percebe?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu consigo perceber apenas uma falha técnica pontual no manejo da água da chuva. Não sinto nada além de uma observação prática de que uma máquina precisará corrigir essa vala.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="p1A" name="p1A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p1')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu sinto uma leve pena pelo prejuízo financeiro que esse colega terá este ano, mas percebo isso como um problema isolado dele, não de todos os agricultores.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="p1B" name="p1B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p1')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu consigo perceber um sinal claro de exaustão da terra, o que me gera um sentimento de alerta sobre a fragilidade do nosso sistema produtivo se não cuidarmos do solo.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="p1C" name="p1C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p1')">
+                        <span id="soma_p1" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão P2 -->
+           <div class="question-card">
+   <!-- Questão P2 -->
+<div class="question-card">
+    <span class="question-number">Questão P2</span>
+    <div class="question-text">Você observa que, para manter os mesmos níveis de produtividade e lucro das safras anteriores, sua lavoura exige volumes cada vez maiores de fertilizantes químicos. Ao caminhar pela propriedade, você percebe uma mudança na textura do solo. A sua situação financeira está muito bem no momento.</div>
+    
+    <div class="question-image">
+        <img src="untitled2.PNG" alt="Textura do solo sendo analisada" style="max-width:100%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin-top:10px; font-size:0.9rem; color:#666;">Imagem gerada por IA - Textura do solo sendo analisada</p>
+    </div>
+    
+    <div class="question-text">Qual das alternativas abaixo, definem melhor o seu sentimento nessa situação:</div>
+    
+    <div class="alternative">
+        <div class="alternative-label">A: Eu vejo essa situação como uma preocupação para um segundo plano. Sinto um desconforto natural, mas que devem ser ignorados enquanto a produção estiver garantindo o meu retorno financeiro.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p2A" name="p2A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p2')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">B: Eu vejo como um sinal de alerta de que o modelo atual pode estar atingindo um nível máximo de custo-benefício, mostrando que é necessário monitorar mais de perto a degradação do solo, mas sem comprometer o lucro atual.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p2B" name="p2B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p2')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">C: Eu vejo como um sinal claro de que o sistema está em desequilíbrio, reconhecendo que esse desconforto é um indicativo de que a rentabilidade presente está sendo obtida através de danos a terra.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p2C" name="p2C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p2')">
+            <span id="soma_p2" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+        </div>
+    </div>
+</div>
+
+           <!-- Questão P3 -->
+<div class="question-card">
+    <span class="question-number">Questão P3</span>
+    <div class="question-text">Recentemente, começaram a surgir críticas severas e manifestações de indignação nas redes sociais (Instagram, Facebook) de clientes sobre a origem não rastreável de alguns produtos hortifrúti e você produz alguns desses alimentos para uma rede de supermercados. A diretoria dessa rede, alega que os preços baixos compensam a falta de certificação.</div>
+    
+    <div class="question-image" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <img src="untitled3.PNG" alt="Críticas em redes sociais - Imagem 1" style="max-width:48%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <img src="untitled4.PNG" alt="Manifestações em redes sociais - Imagem 2" style="max-width:48%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin-top:10px; font-size:0.9rem; color:#666; width:100%;">Imagens geradas por IA - Redes sociais</p>
+    </div>
+    
+    <div class="question-text">Como você enxerga as ações desses consumidores?</div>
+    
+    <div class="alternative">
+        <div class="alternative-label">A: Eu vejo que a indignação é passageira e normalmente vem de um pequeno grupo de ativistas. O melhor é continuar com a estratégia de preço baixo, pois isso é o que importa para o consumidor.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p3A" name="p3A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p3')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">B: Eu percebo que a indignação reflete um sentimento aceitável dos consumidores, o ideal seria convencer a diretoria de que a rastreabilidade é necessária para reconstruir a confiança com o cliente.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p3B" name="p3B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p3')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">C: Eu reconheço que o clima é de hostilidade e devo sugerir uma campanha para melhorar a imagem, que use cores verdes e imagens de natureza para acalmar os ânimos.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p3C" name="p3C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p3')">
+            <span id="soma_p3" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+        </div>
+    </div>
+</div>
+        <!-- Questão P4 -->
+<div class="question-card">
+    <span class="question-number">Questão P4</span>
+    <div class="question-text">Você está em uma safra onde os preços do seu produto agrícola, estão em um nível muito alto. Você tem a oportunidade de aplicar um fertilizante químico agressivo que custa pouco e garante um aumento imediato de 15% na produtividade apenas para este ano. No entanto, essa prática causará uma degradação severa no solo, exigindo gastos muito maiores com recuperação nos próximos 5 anos.</div>
+    
+    <div class="question-image" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <img src="untitled5.PNG" alt="Balança com dinheiro - Imagem 1" style="max-width:48%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <img src="untitled6.PNG" alt="Terra degradada - Imagem 2" style="max-width:48%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin-top:10px; font-size:0.9rem; color:#666; width:100%;">Imagens geradas por IA - Dinheiro vs Terra</p>
+    </div>
+    
+    <div class="question-text">Qual dessas lógicas de pensamento melhor equilibra seus sentimentos e objetivos?</div>
+    
+    <div class="alternative">
+        <div class="alternative-label">A: Eu devo priorizar a maximização de lucros e aproveitar o mercado favorável, garantindo uma reserva de dinheiro que pode proteger o meu negócio das variações econômicas futuras do setor.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p4A" name="p4A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p4')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">B: Eu devo adotar um manejo, que use esses fertilizantes, apenas em áreas estratégicas para captar parte do lucro extra.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p4B" name="p4B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p4')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">C: Eu devo manter o planejamento regenerativo já iniciado, valorizando a estabilidade do capital biológico e a resiliência do ecossistema produtivo, acima de ganhos favoráveis temporários.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="p4C" name="p4C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('p4')">
+            <span id="soma_p4" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+        </div>
+    </div>
+</div>
+
+            <!-- ========== DIMENSÃO: FACILITAÇÃO ========== -->
+           <h2>💭 DIMENSÃO - FACILITAÇÃO</h2>
+
+<!-- Questão F1 -->
+<div class="question-card">
+    <span class="question-number">Questão F1</span>
+    <div class="question-text">O mercado está oferecendo um preço muito elevado para o seu produto. Pensando em uma safra extra, na qual você poderá aumentar o seu lucro anual em 20%, mas para conseguir essa safra, não será possível utilizar uma adubação verde, que recuperaria o solo. Você sente um entusiasmo financeiro pelo lucro extra, mas sente uma incerteza sobre o manejo.</div>
+    <div class="question-text">Como você usaria esses sentimentos para tomar a sua decisão?</div>
+    
+    <div class="alternative">
+        <div class="alternative-label">A: Devo utilizar o entusiasmo para iniciar a safra extra, priorizando a formação da reserva financeira contra crises futuras.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="f1A" name="f1A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f1')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">B: Eu devo considerar a incerteza e fazer uma divisão da área: metade para o lucro imediato e metade para a conservação, buscando equilibrar o financeiro e a manutenção de parte do solo.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="f1B" name="f1B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f1')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">C: Eu devo transformar a incerteza como um sinal de atenção técnica, concluindo que a preservação do solo é a prioridade estratégica que garante a lucratividade sustentável das safras futuras.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="f1C" name="f1C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f1')">
+            <span id="soma_f1" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+        </div>
+    </div>
+</div>
+            <!-- Questão F2 -->
+            <div class="question-card">
+                <span class="question-number">Questão F2</span>
+                <div class="question-text">Temos uma previsão de estiagem prolongada para nossa região. Você precisa sentar para planejar o estoque de sementes e o uso da água para os próximos meses.</div>
+                <div class="question-text">Qual estado emocional você percebe que seria mais útil para te ajudar a fazer um planejamento detalhado e seguro?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto que estar muito animado e otimista é o melhor, pois me faz acreditar que a seca não será tão ruim e que o lucro virá mesmo assim.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f2A" name="f2A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu consigo perceber que estar indiferente é o ideal, pois trato o planejamento como uma tarefa comum, sem me preocupar com os riscos ambientais ou financeiros.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f2B" name="f2B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto que um pouco de preocupação e cautela é o mais útil, pois esse sentimento me ajuda a focar nos detalhes e a criar um plano que economize água e proteja minha terra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f2C" name="f2C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f2')">
+                        <span id="soma_f2" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão F3 -->
+            <div class="question-card">
+                <span class="question-number">Questão F3</span>
+                <div class="question-text">Um técnico da cooperativa apresenta uma nova técnica de adubação orgânica que recupera o solo, mas exige que você mude a forma como trabalha há anos. Você precisa decidir se vale a pena testar essa inovação sustentável.</div>
+                <div class="question-text">Para avaliar as novas possibilidades que essa técnica traz para o futuro da sua propriedade, qual estado de espírito melhor te ajudaria?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu consigo perceber que estar desconfiado e irritado ajuda, pois assim foco apenas nos defeitos da proposta e não perco meu tempo com mudanças.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f3A" name="f3A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu sinto que estar curioso e satisfeito é o mais útil, pois esses sentimentos me ajudam a enxergar como essa prática pode melhorar a saúde do meu solo e o valor do meu produto.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f3B" name="f3B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto que estar neutro e sem emoções é a melhor forma de decidir, pois acredito que sentimentos não devem interferir em escolhas sobre lucro e sustentabilidade.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f3C" name="f3C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f3')">
+                        <span id="soma_f3" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão F4 -->
+            <div class="question-card">
+                <span class="question-number">Questão F4</span>
+                <div class="question-text">A cooperativa propõe um projeto coletivo para criar uma usina de compostagem orgânica. Isso exigirá que você dedique algumas horas do seu descanso para aprender a nova técnica, mas reduzirá seus gastos com adubo químico no futuro.</div>
+                <div class="question-text">Qual estado emocional você percebe que melhor te ajudaria a decidir se deve entrar nesse projeto?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto que estar impaciente e focado no lucro de hoje me ajuda a recusar, pois percebo que o trabalho extra agora não põe dinheiro no meu bolso.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f4A" name="f4A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Consigo perceber que estar indiferente é o melhor, pois sinto que não devo me envolver emocionalmente com mudanças na forma de cuidar da terra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f4B" name="f4B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Sinto que estar entusiasmado e esperançoso é o mais útil, pois percebo que esse sentimento me motiva a aceitar o esforço hoje para ter uma terra mais rica amanhã.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="f4C" name="f4C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('f4')">
+                        <span id="soma_f4" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== DIMENSÃO: COMPREENSÃO DA EMOÇÃO ========== -->
+            <h2>🔍 DIMENSÃO - COMPREENSÃO DA EMOÇÃO</h2>
+
+            <!-- Questão C1 -->
+            <div class="question-card">
+                <span class="question-number">Questão C1</span>
+                <div class="question-text">Um grande comprador internacional anuncia que só comprará de produtores que possuam uma certificação ambiental rigorosa. Você sente uma mistura de raiva e preocupação. Na sua análise, por que essas emoções surgiram e qual será a provável evolução delas?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: A raiva surge porque o comprador está sendo injusto e a tendência é que esse sentimento se transforme em resistência e abandono da parceria comercial.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c1A" name="c1A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c1')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: A preocupação vem da incerteza financeira e a raiva por ter que seguir as exigências de outras pessoas, mas se eu entender as exigências, essa preocupação pode se transformar em motivação para melhorar o processo.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c1B" name="c1B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c1')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: A preocupação surge apenas pela burocracia e a raiva vai passar assim que eu encontrar outro comprador que não exija nada sustentável.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c1C" name="c1C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c1')">
+                        <span id="soma_c1" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão C2 -->
+            <div class="question-card">
+                <span class="question-number">Questão C2</span>
+                <div class="question-text">Você decidiu converter parte da sua produção para o sistema orgânico. No primeiro mês, a produção caiu um pouco e você se sente preocupado e inseguro.</div>
+                <div class="question-text">Ao analisar o que você está sentindo, qual seria a explicação mais correta para essa emoção?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto que essa insegurança é um sinal de que tomei a decisão errada e percebo que, se eu continuar, esse sentimento só vai piorar até virar um grande arrependimento.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c2A" name="c2A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu consigo perceber que essa insegurança vem do medo do desconhecido, mas entendo que com o tempo, vou dominar a técnica e o lucro voltará, e o sentimento será de satisfação.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c2B" name="c2B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto que a insegurança não tem motivo nenhum e percebo que as emoções não mudam, se comecei preocupado, vou terminar a safra sentindo exatamente a mesma coisa.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c2C" name="c2C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c2')">
+                        <span id="soma_c2" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão C3 -->
+            <div class="question-card">
+                <span class="question-number">Questão C3</span>
+                <div class="question-text">A cooperativa anuncia que o mercado agora exige um novo padrão de sustentabilidade. Na assembleia, você percebe que muitos colegas estão irritados e falando alto contra a medida.</div>
+                <div class="question-text">Como você interpreta a razão e a evolução desse sentimento dos seus colegas?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu consigo perceber que a irritação deles nasce do medo de perder dinheiro, mas entendo que se isso trouxer um preço melhor, o sentimento depois será de alívio.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c3A" name="c3A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu sinto que a irritação deles é apenas falta de paciência e percebo que eles estão sendo agressivos só por hábito, sem que haja uma preocupação real com o dinheiro ou com a terra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c3B" name="c3B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu consigo perceber que eles estão com raiva porque a sustentabilidade é algo ruim, e sinto que esse sentimento não vai mudar.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c3C" name="c3C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c3')">
+                        <span id="soma_c3" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão C4 -->
+            <div class="question-card">
+                <span class="question-number">Questão C4</span>
+                <div class="question-text">Você passou dois anos investindo na recuperação de uma área de solo degradado, gastando tempo e dinheiro que não trouxeram lucro imediato. Hoje, em um período de seca forte, sua área é a única que continua verde e produzindo, enquanto a dos vizinhos secou.</div>
+                <div class="question-text">Ao ver o resultado do seu esforço hoje, como você compreende essa situação?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto apenas alívio financeiro, e consigo perceber que qualquer felicidade que sinto agora virá apenas da venda da colheita, sem ter relação com o cuidado que tive com a terra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c4A" name="c4A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu sinto um orgulho profundo e consigo perceber que esse sentimento vem de ter equilibrado o respeito à natureza com a segurança do meu sustento.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c4B" name="c4B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu consigo perceber que estou satisfeito agora, mas sinto que essa alegria é pura sorte, pois entendo que emoções e resultados agrícolas não possuem nenhuma ligação lógica.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c4C" name="c4C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c4')">
+                        <span id="soma_c4" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão C5 -->
+            <div class="question-card">
+                <span class="question-number">Questão C5</span>
+                <div class="question-text">Você acabou de fechar uma venda grande, com um lucro muito alto, mas para isso precisou vender um lote de produtos que usou um defensivo químico acima do recomendado pelo selo de sustentabilidade da cooperativa.</div>
+                <div class="question-text">Como você explica o sentimentos que surge após essa venda?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto uma felicidade completa, pois entendo que o dinheiro no bolso é a fonte de satisfação para o produtor.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c5A" name="c5A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c5')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu sinto uma alegria pelo dinheiro, mas consigo perceber uma ponta de culpa ou inquietação, pois entendo que o lucro que fere a ética da sustentabilidade deixa a satisfação incompleta.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c5B" name="c5B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c5')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto que estou confuso, mas percebo que sentimento de culpa são bobagem, pois entendo que as emoções não deveriam existir quando o assunto é o financeiro da produção.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="c5C" name="c5C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('c5')">
+                        <span id="soma_c5" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== DIMENSÃO: GESTÃO DA EMOÇÃO ========== -->
+
+           <h2>🎯 DIMENSÃO - GESTÃO DA EMOÇÃO</h2>
+
+<!-- Questão G1 -->
+<div class="question-card">
+    <span class="question-number">Questão G1</span>
+    <div class="question-text">Você resolve utilizar um novo biopesticida sustentável, que reduziu sua produtividade inicial em 10%. Isso gerou ansiedade sobre o pagamento das dívidas da safra. Qual a melhor forma de lidar com esse sentimento?</div>
+    
+    <div class="question-image">
+        <img src="untitled7.PNG" alt="Agricultor analisando plantação com preocupação - Imagem gerada por IA" style="max-width:100%; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <p style="margin-top:10px; font-size:0.9rem; color:#666;">Imagem gerada por IA - Agricultor preocupado</p>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">A: Eu quero acabar com essa ansiedade e por isso volto imediatamente ao uso do agrotóxico químico para garantir a margem de lucro daquele momento.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="g1A" name="g1A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g1')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">B: Eu reconheço a ansiedade como natural, busco conhecimento técnico pois sei que isso leva tempo e tento renegociar prazos com o financiador.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="g1B" name="g1B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g1')">
+        </div>
+    </div>
+    
+    <div class="alternative">
+        <div class="alternative-label">C: Tento não pensar no problema e espero que a produtividade aumente sozinha no próximo mês.</div>
+        <div class="peso-control">
+            <label>Peso (0-1):</label>
+            <input type="number" id="g1C" name="g1C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g1')">
+            <span id="soma_g1" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+        </div>
+    </div>
+</div>
+            <!-- Questão G2 -->
+            <div class="question-card">
+                <span class="question-number">Questão G2</span>
+                <div class="question-text">Você decidiu implementar um sistema de manejo biológico no solo. Nos primeiros meses, você percebe que as pragas aumentaram um pouco e a aparência da lavoura não está tão bonita quanto antes. Isso gera uma certa inquietação e medo de perder o investimento.</div>
+                <div class="question-text">Qual ação é mais certa de lidar com essa inquietação e medo?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu tenho que interromper o plano biológico imediatamente e aplicar uma dose extra de defensivo químico para aliviar essa inquietação.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g2A" name="g2A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu devo reconhecer que a inquietação é parte da mudança, devo buscar suporte técnico para entender o ciclo de equilíbrio do solo e focar na saúde do solo.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g2B" name="g2B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g2')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu tenho que evitar ir até aquela parte da lavoura para não sentir mal-estar, esperando que o problema se resolva sozinho com o tempo sem ter que fazer mais alguma coisa.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g2C" name="g2C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g2')">
+                        <span id="soma_g2" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão G3 -->
+            <div class="question-card">
+                <span class="question-number">Questão G3</span>
+                <div class="question-text">Você iniciou um projeto de certificação sustentável que proíbe o uso de certas substâncias químicas. No meio da safra, surge uma infestação que poderia ser controlada rapidamente e com menor custo, por um produto proibido pela certificação. A escolha pelo produto permitido, que é sustentável, é mais cara e lenta, reduzindo sua margem de lucro imediata. Você sente à vontade de resolver o problema do modo mais barato.</div>
+                <div class="question-text">Para você qual a forma correta de agir diante desse sentimento?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu devo ceder ao impulso e utilizar o produto mais barato de forma pontual e discreta, focando na proteção financeira imediata da safra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g3A" name="g3A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu devo controlar o impulso, analisar o custo-benefício, avaliando se a perda da certificação é maior ou menor que o custo extra do produto sustentável.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g3B" name="g3B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g3')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu devo regular esse sentimento, e reafirmar o compromisso com a certificação, pois entendo que a disciplina no manejo sustentável constrói uma reputação e valor no longo prazo.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g3C" name="g3C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g3')">
+                        <span id="soma_g3" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão G4 -->
+            <div class="question-card">
+                <span class="question-number">Questão G4</span>
+                <div class="question-text">Você assumiu um compromisso com o protocolo de produção sustentável da cooperativa, que proíbe certos venenos químicos fortes. De repente, uma praga ataca sua área mais produtiva. Você sabe que o veneno proibido é barato e resolve o problema em 24 horas. O controle biológico, que é permitido, é mais lento, mais caro e exigirá mais trabalho, arriscando perder parte da produção.</div>
+                <div class="question-text">Como você lida com esse sentimento para tomar sua decisão?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto que o medo do prejuízo financeiro é insuportável neste momento, e percebo que a única forma de aliviar essa angústia é usar o veneno, para garantir o lucro da safra.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g4A" name="g4A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu percebo o impulso forte de usar o caminho mais fácil, mas tento controlar esse sentimento e espero mais uns dias para ver se a situação se resolve sozinha antes de gastar com o produto biológico.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g4B" name="g4B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g4')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto a pressão e o medo da perda, mas consigo perceber que ceder a esse impulso agora quebraria a confiança no meu trabalho a longo prazo, então respiro fundo e sigo o protocolo sustentável, mesmo sendo mais difícil.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g4C" name="g4C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g4')">
+                        <span id="soma_g4" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão G5 -->
+            <div class="question-card">
+                <span class="question-number">Questão G5</span>
+                <div class="question-text">Um comprador externo oferece pagar à vista um valor muito acima do mercado por toda a sua colheita. Porém, ele exige que você misture produtos que não seguem as normas de sustentabilidade da sua cooperativa. Você está com as contas de casa apertadas e sente uma forte tentação.</div>
+                <div class="question-text">Como você lida com o que está sentindo para tomar sua decisão?</div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">A: Eu sinto que a felicidade de pagar minhas dívidas agora é maior, então percebo que o melhor é aceitar o dinheiro.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g5A" name="g5A" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g5')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">B: Eu consigo perceber que a preocupação com as contas me deixa confuso, então prefiro não pensar no assunto e aceitar a oferta para acabar logo com essa angústia.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g5B" name="g5B" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g5')">
+                    </div>
+                </div>
+                
+                <div class="alternative">
+                    <div class="alternative-label">C: Eu sinto a tentação, pois preciso pagar minhas contas, mas consigo controlar esse impulso e manter o compromisso.</div>
+                    <div class="peso-control">
+                        <label>Peso (0-1):</label>
+                        <input type="number" id="g5C" name="g5C" step="0.1" min="0" max="1" value="0.0" oninput="validarSoma('g5')">
+                        <span id="soma_g5" class="soma-indicator soma-invalida">❌ Soma = 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="buttons">
+                <button type="button" onclick="enviarEmail()">📧 ENVIAR VALIDAÇÃO</button>
+                <button type="button" class="btn-reset" onclick="window.location.reload()">↻ REINICIAR</button>
+            </div>
+        </form>
+
+        <div class="footer">
+            <p>IEAF - Instrumento de Validação por Especialistas • Pesquisa de Doutorado • Todos os dados são confidenciais</p>
+            <p style="font-size:0.85rem; margin-top:10px;">© 2024 - Escala de Inteligência Emocional da Agricultura Familiar</p>
+        </div>
+    </div>
+
+    <script>
+       // FUNÇÃO DE ENVIO - VERSÃO GMAIL DIRETO
+function enviarEmail() {
+    const email = "jussara_ana@hotmail.com";
+    
+    // Coletar dados de identificação
+    const areaAtuacao = document.querySelector('input[name="area_atuacao"]:checked')?.value || 'Nao selecionado';
+    const titulacao = document.querySelector('select[name="titulacao"]')?.value || 'Nao selecionado';
+    const tempoAtuacao = document.querySelector('select[name="tempo_atuacao"]')?.value || 'Nao selecionado';
+    const setor = document.querySelector('select[name="setor"]')?.value || 'Nao selecionado';
+
+    // Validar preenchimento
+    if (!areaAtuacao || areaAtuacao === 'Nao selecionado' || 
+        !titulacao || titulacao === 'Nao selecionado' || 
+        !tempoAtuacao || tempoAtuacao === 'Nao selecionado' || 
+        !setor || setor === 'Nao selecionado') {
+        alert('❌ Por favor, preencha todos os campos de identificacao antes de enviar.');
+        return;
+    }
+
+    // Validar somas de todas as questões
+    let todasValidas = true;
+    
+    function validarQuestao(prefixo, num) {
+        for (let i = 1; i <= num; i++) {
+            const a = parseFloat(document.getElementById(prefixo + i + 'A')?.value) || 0;
+            const b = parseFloat(document.getElementById(prefixo + i + 'B')?.value) || 0;
+            const c = parseFloat(document.getElementById(prefixo + i + 'C')?.value) || 0;
+            const soma = a + b + c;
+            
+            if (Math.abs(soma - 1.0) > 0.001) {
+                todasValidas = false;
+                alert(`❌ Questão ${prefixo.toUpperCase()}${i}: soma = ${soma.toFixed(2)} (deve ser 1.0)`);
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    // Validar todas as dimensões
+    if (!validarQuestao('p', 4)) return;
+    if (!validarQuestao('f', 4)) return;
+    if (!validarQuestao('c', 5)) return;
+    if (!validarQuestao('g', 5)) return;
+
+    // Construir corpo do email
+    let corpo = "🔬 IEAF - VALIDACAO POR ESPECIALISTA\n\n";
+    corpo += "=".repeat(60) + "\n\n";
+    corpo += "📌 IDENTIFICACAO:\n";
+    corpo += "• Area de atuacao: " + areaAtuacao + "\n";
+    corpo += "• Titulacao: " + titulacao + "\n";
+    corpo += "• Tempo de atuacao: " + tempoAtuacao + "\n";
+    corpo += "• Setor: " + setor + "\n\n";
+
+    function coletarQuestoes(prefixo, num, titulo) {
+        corpo += "📊 " + titulo + ":\n";
+        for (let i = 1; i <= num; i++) {
+            const a = document.getElementById(prefixo + i + 'A')?.value || '0.0';
+            const b = document.getElementById(prefixo + i + 'B')?.value || '0.0';
+            const c = document.getElementById(prefixo + i + 'C')?.value || '0.0';
+            
+            const soma = (parseFloat(a) + parseFloat(b) + parseFloat(c)).toFixed(2);
+            const status = Math.abs(soma - 1.0) < 0.01 ? '✅' : '❌';
+            
+            corpo += prefixo.toUpperCase() + i + ": A=" + a + " | B=" + b + " | C=" + c + " | Soma=" + soma + " " + status + "\n";
+        }
+        corpo += "\n";
+    }
+
+    // Coletar todas as dimensões
+    coletarQuestoes('p', 4, 'PERCEPCAO (P1-P4)');
+    coletarQuestoes('f', 4, 'FACILITACAO (F1-F4)');
+    coletarQuestoes('c', 5, 'COMPREENSAO (C1-C5)');
+    coletarQuestoes('g', 5, 'GESTAO (G1-G5)');
+    
+    corpo += "📅 Data e hora: " + new Date().toLocaleString('pt-BR') + "\n";
+
+    // Codificar para URL
+    const assunto = encodeURIComponent("✅ VALIDACAO IEAF - " + areaAtuacao + " - " + new Date().toLocaleDateString('pt-BR'));
+    const corpoEncoded = encodeURIComponent(corpo);
+    
+    // Abrir Gmail com tudo preenchido
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + email + '&su=' + assunto + '&body=' + corpoEncoded, '_blank');
+    
+    alert('✅ Gmail aberto! Agora e so clicar em ENVIAR');
+}
+    </script>
+</body>
+</html>
