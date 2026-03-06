@@ -1042,7 +1042,7 @@
     </div>
 
     <script>
-       // FUNÇÃO DE ENVIO - VERSÃO GMAIL DIRETO
+       // FUNÇÃO DE ENVIO - FUNCIONA NO CELULAR E PC
 function enviarEmail() {
     const email = "jussara_ana@hotmail.com";
     
@@ -1118,14 +1118,23 @@ function enviarEmail() {
     
     corpo += "📅 Data e hora: " + new Date().toLocaleString('pt-BR') + "\n";
 
-    // Codificar para URL
-    const assunto = encodeURIComponent("✅ VALIDACAO IEAF - " + areaAtuacao + " - " + new Date().toLocaleDateString('pt-BR'));
-    const corpoEncoded = encodeURIComponent(corpo);
+    // DETECÇÃO DE CELULAR
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
-    // Abrir Gmail com tudo preenchido
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + email + '&su=' + assunto + '&body=' + corpoEncoded, '_blank');
-    
-    alert('✅ Gmail aberto! Agora e so clicar em ENVIAR');
+    if (isMobile) {
+        // No celular: abre o app de email padrão
+        const mailtoLink = "mailto:" + email + 
+                          "?subject=" + encodeURIComponent("VALIDACAO IEAF - " + areaAtuacao) + 
+                          "&body=" + encodeURIComponent(corpo);
+        window.location.href = mailtoLink;
+        alert('✅ App de email aberto! Agora é só enviar.');
+    } else {
+        // No PC: abre Gmail
+        const assunto = encodeURIComponent("✅ VALIDACAO IEAF - " + areaAtuacao + " - " + new Date().toLocaleDateString('pt-BR'));
+        const corpoEncoded = encodeURIComponent(corpo);
+        window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + email + '&su=' + assunto + '&body=' + corpoEncoded, '_blank');
+        alert('✅ Gmail aberto! Agora é só clicar em ENVIAR');
+    }
 }
     </script>
 </body>
